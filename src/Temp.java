@@ -8,54 +8,56 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Temp {
-    ArrayList<Double> tempData;
+    ArrayList<Double> tempList;
+    protected Scanner sc;
 
     public Temp() {
-        Double[] temps = { 2.5, 2.8, 1.2, 0.5, -1.1 };
-        this.tempData = new ArrayList<>(Arrays.asList(temps));        
+        Double[] baseTemps = { 2.5, 2.8, 1.2, 0.5, -1.1 };
+        this.tempList = new ArrayList<>(Arrays.asList(baseTemps));        
     }
 
     public void tempRead() {
-        String end = "";
-        while(!end.equals("vege")) {
-            end = getTemp();
-            InputNum(end);
+        String inputData = "";
+        while(!inputData.equals("vege")) {
+            inputData = getTemp();
+            checkIfRunning(inputData);
         }
     }
 
     public String getTemp() {
-        Scanner sc = new Scanner(System.in);
+        sc = new Scanner(System.in);
         System.out.print("Hőmérséklet: ");
         return sc.nextLine();
     }
     
-    public void InputNum(String tempStr) {
+    public void checkIfRunning(String tempStr) {
         if (!tempStr.equals("vege")) {
-            output(tempStr);
+            convertAndAdd(tempStr);
         }else {
-            outputTemps();
+            sc.close();
+            writeList();
         }
     }    
 
-    public void output(String tempStr) {
-        if (CheckNumberInput(tempStr)) {
+    public void convertAndAdd(String tempStr) {
+        if (checkInput(tempStr)) {
             double temp = Double.parseDouble(tempStr);
-            tempData.add(temp);
+            tempList.add(temp);
         }else {
             System.err.println("Hiba! Számot kell beírni!");
         }
     }
     
-    public boolean CheckNumberInput(String inputNum) {
-        if (inputNum.matches("[0-9.]+")) {
+    public boolean checkInput(String input) {
+        if (input.matches("[0-9.]+")) {
             return true;
         }else {
             return false;
         }
     }
 
-    public void outputTemps() {
-        for (double temp : this.tempData) {
+    public void writeList() {
+        for (double temp : this.tempList) {
             System.out.print(temp + " ");
         }
         System.out.println();
